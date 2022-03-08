@@ -53,6 +53,18 @@ public class MapGrid
         return cellGrid[(int)z, (int)x].IsTaken;
     }
 
+    public int CalculateIndexFromCoordinates(int x, int z)
+    {
+        return x + z * width;
+    }
+
+    public Vector3 CalculateCoordinatesFromIndex(int randomIndex)
+    {
+        int x = randomIndex % width;
+        int z = randomIndex / width;
+        return new Vector3(x, 0, z);
+    }
+
     public bool IsCellValid(float x, float z)
     {
         if (x >= width || x < 0 || z >= length || z < 0)
@@ -74,11 +86,6 @@ public class MapGrid
     public Cell GetCell(float x, float z)
     {
         return GetCell((int)x, (int)z);
-    }
-
-    public int CalculateIndexFromCoordinates(int x, int z)
-    {
-        return x + z * width;
     }
 
     public int CalculateIndexFromCoordinates(float x, float z)
