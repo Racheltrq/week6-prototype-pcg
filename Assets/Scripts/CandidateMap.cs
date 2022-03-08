@@ -17,7 +17,6 @@ public class CandidateMap
     public CandidateMap(MapGrid grid, int numberOfPieces)
     {
         this.numberOfPieces = numberOfPieces;
-        this.knightPiecesList = new List<KnightPiece>();
         this.grid = grid;
     }
 
@@ -25,7 +24,8 @@ public class CandidateMap
     {
         this.startPoint = startPosition;
         this.exitPoint = exitPosition;
-
+        obstaclesArray = new bool[grid.Width * grid.Length];
+        this.knightPiecesList = new List<KnightPiece>();
         RandomlyPlaceKnightPieces(this.numberOfPieces);
     }
 
@@ -60,5 +60,16 @@ public class CandidateMap
             }
             knightPlacementTryLimit--;
         }
+    }
+
+    public MapData ReturnMapData()
+    {
+        return new MapData
+        {
+            obstacleArray = this.obstaclesArray,
+            knightPiecesList = knightPiecesList,
+            startPosition = startPoint,
+            exitPosition = exitPoint
+        };
     }
 }
