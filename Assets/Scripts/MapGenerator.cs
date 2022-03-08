@@ -11,8 +11,10 @@ public class MapGenerator : MonoBehaviour
     [Range(1,10)]
     public int numberOfPieces;
     private Vector3 startPosition, exitPosition;
+    public bool visualizeUsingPrefabs = false;
+    public bool autoRepair = true;
 
-    [Range(3,20)]
+    //[Range(3,20)]
     public int width, length = 11;
     private MapGrid grid;
     private CandidateMap map;
@@ -33,8 +35,8 @@ public class MapGenerator : MonoBehaviour
         grid = new MapGrid(width, length); // generate a new grid
         MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge); // randomly select start and exit points
         map = new CandidateMap(grid, numberOfPieces);
-        map.CreateMap(startPosition, exitPosition);
-        mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), false);
+        map.CreateMap(startPosition, exitPosition, autoRepair);
+        mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), visualizeUsingPrefabs);
     }
 
     public void TryRepair()
@@ -45,7 +47,7 @@ public class MapGenerator : MonoBehaviour
             if (listOfObstaclesToRemove.Count > 0)
             {
                 mapVisualizer.ClearMap();
-                mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), false);
+                mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), visualizeUsingPrefabs);
             }
         }
     }

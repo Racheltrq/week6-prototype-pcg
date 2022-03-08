@@ -43,7 +43,7 @@ public class CandidateMap
         this.path = Astar.GetPath(startPoint, exitPoint, obstaclesArray, grid);
         foreach (var position in this.path)
         {
-            UnityEngine.Debug.Log(position);
+            //UnityEngine.Debug.Log(position);
         }
     }
 
@@ -107,7 +107,8 @@ public class CandidateMap
             obstacleArray = this.obstaclesArray,
             knightPiecesList = knightPiecesList,
             startPosition = startPoint,
-            exitPosition = exitPoint
+            exitPosition = exitPoint,
+            path = this.path
         };
     }
 
