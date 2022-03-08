@@ -1,6 +1,6 @@
-using System.Diagnostics;
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,6 +31,11 @@ public class CandidateMap
         RandomlyPlaceKnightPieces(this.numberOfPieces);
         PlaceObstacles();
         FindPath();
+
+        if (autoRepair)
+        {
+            Repair();
+        }
     }
 
     private void FindPath()
@@ -104,5 +109,42 @@ public class CandidateMap
             startPosition = startPoint,
             exitPosition = exitPoint
         };
+    }
+
+    public List<Vector3> Repair()
+    {
+        int numberOfObstacles = obstaclesArray.Where(obstacle => obstacle).Count();
+        List<Vector3> listOfObstaclesToRemove = new List<Vector3>();
+        if (path.Count <= 0)
+        {
+            do
+            {
+                int obstacleIndexToRemove = Random.Range(0, numberOfObstacles);
+                for (int i = 0; i < obstaclesArray.Length; i++)
+                {
+                    if (obstaclesArray[i])
+                    {
+                        if (obstacleIndexToRemove == 0)
+                        {
+                            obstaclesArray[i] = false;
+                            listOfObstaclesToRemove.Add(grid.CalculateCoordinatesFromIndex(i));
+                            break;
+                        }
+                        obstacleIndexToRemove--;
+                    }
+                }
+                FindPath();
+            }while (this.path.Count <= 0);
+        }
+        foreach (var obstaclePosition in listOfObstaclesToRemove)
+        {
+            if (path.Contains(obstaclePosition) == false)
+            {
+                int index = grid.CalculateIndexFromCoordinates(obstaclePosition.x, obstaclePosition.z);
+                obstaclesArray[index] = true;
+            }
+        }
+        
+        return listOfObstaclesToRemove;
     }
 }

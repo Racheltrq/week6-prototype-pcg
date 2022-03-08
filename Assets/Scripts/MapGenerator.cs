@@ -15,6 +15,7 @@ public class MapGenerator : MonoBehaviour
     [Range(3,20)]
     public int width, length = 11;
     private MapGrid grid;
+    private CandidateMap map;
 
     // Start is called before the first frame update
     private void Start()
@@ -31,9 +32,22 @@ public class MapGenerator : MonoBehaviour
         mapVisualizer.ClearMap(); // clear map
         grid = new MapGrid(width, length); // generate a new grid
         MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge); // randomly select start and exit points
-        CandidateMap map = new CandidateMap(grid, numberOfPieces);
+        map = new CandidateMap(grid, numberOfPieces);
         map.CreateMap(startPosition, exitPosition);
         mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), false);
+    }
+
+    public void TryRepair()
+    {
+        if (map != null)
+        {
+            var listOfObstaclesToRemove = map.Repair();
+            if (listOfObstaclesToRemove.Count > 0)
+            {
+                mapVisualizer.ClearMap();
+                mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), false);
+            }
+        }
     }
 
 }
