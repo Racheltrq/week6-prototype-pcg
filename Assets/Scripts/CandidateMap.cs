@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class CandidateMap
     private bool[] obstaclesArray = null;
     private Vector3 startPoint, exitPoint;
     private List<KnightPiece> knightPiecesList;
+    private List<Vector3> path = new List<Vector3>(0);
 
     public MapGrid Grid { get => grid; }
     public bool[] ObstaclesArray { get => obstaclesArray; }
@@ -28,6 +30,16 @@ public class CandidateMap
         this.knightPiecesList = new List<KnightPiece>();
         RandomlyPlaceKnightPieces(this.numberOfPieces);
         PlaceObstacles();
+        FindPath();
+    }
+
+    private void FindPath()
+    {
+        this.path = Astar.GetPath(startPoint, exitPoint, obstaclesArray, grid);
+        foreach (var position in this.path)
+        {
+            UnityEngine.Debug.Log(position);
+        }
     }
 
     private bool CheckIfPositionCanBeObstacle(Vector3 position)
