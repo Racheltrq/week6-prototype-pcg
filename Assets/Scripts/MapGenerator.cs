@@ -18,8 +18,9 @@ public class MapGenerator : MonoBehaviour
     {
         MapGrid grid = new MapGrid(width, length);
         gridVisualizer.VisualizeGrid(width, length);
-        MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, startEdge, exitEdge);
-        //grid.CheckCoordinates();
+        MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge);
+        Debug.Log(startPosition);
+        Debug.Log(exitPosition);
     }
 
 }

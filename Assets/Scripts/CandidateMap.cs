@@ -7,7 +7,7 @@ public class CandidateMap
 {
     public MapGrid grid;
     private int numberOfPieces = 0;
-    private bool[] pbstaticArray = null;
+    private bool[] obstaclesArray = null;
     private Vector3 startPoint, exitPoint;
     private List<KnightPiece> knightPiecesList;
 
