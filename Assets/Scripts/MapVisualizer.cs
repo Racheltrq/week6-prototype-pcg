@@ -10,6 +10,8 @@ public class MapVisualizer : MonoBehaviour
     private Transform parent;
     public UnityEngine.Color startColor, exitColor;
 
+    Dictionary<Vector3, GameObject> dictionaryOfObstacles = new Dictionary<Vector3, GameObject>();
+
     private void Awake()
     {
         parent = this.transform;
@@ -44,6 +46,11 @@ public class MapVisualizer : MonoBehaviour
                 {
                     continue;
                 }
+                if (dictionaryOfObstacles.ContainsKey(positionOnGrid) == false)
+                {
+                    CreateIndicator(positionOnGrid, UnityEngine.Color.white, PrimitiveType.Cube);
+                }
+                
             }
         }
     }
@@ -68,13 +75,24 @@ public class MapVisualizer : MonoBehaviour
     }
 
     private void CreateIndicator(Vector3 position, UnityEngine.Color color, PrimitiveType sphere)
-		{
-			var element = GameObject.CreatePrimitive(sphere);
-			element.transform.position = position + new Vector3(.5f,.5f,.5f);
-			element.transform.parent = parent;
-			var renderer = element.GetComponent<Renderer>();
-			renderer.material.SetColor("_Color", color);
-		}
+    {
+        var element = GameObject.CreatePrimitive(sphere);
+        dictionaryOfObstacles.Add(position, element);
+        element.transform.position = position + new Vector3(.5f,.5f,.5f); // fit into the grid
+        element.transform.parent = parent;
+        var renderer = element.GetComponent<Renderer>();
+        renderer.material.SetColor("_Color", color);
+    }
+
+    public void ClearMap()
+    {
+        foreach (var obstacle in dictionaryOfObstacles.Values)
+        {
+            Destroy(obstacle);
+        }
+        dictionaryOfObstacles.Clear();
+        
+    }
     
 }
 

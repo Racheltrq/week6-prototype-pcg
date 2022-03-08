@@ -27,6 +27,7 @@ public class CandidateMap
         obstaclesArray = new bool[grid.Width * grid.Length];
         this.knightPiecesList = new List<KnightPiece>();
         RandomlyPlaceKnightPieces(this.numberOfPieces);
+        PlaceObstacles();
     }
 
     private bool CheckIfPositionCanBeObstacle(Vector3 position)
@@ -59,6 +60,26 @@ public class CandidateMap
                 count--;
             }
             knightPlacementTryLimit--;
+        }
+    }
+
+    private void PlaceObstaclesForThisKnight(KnightPiece knight)
+    {
+        foreach (var position in KnightPiece.listOfPossibleMoves)
+        {
+            var newPosition = knight.Position + position;
+            if (grid.IsCellValid(newPosition.x, newPosition.z) && CheckIfPositionCanBeObstacle(newPosition))
+            {
+                obstaclesArray[grid.CalculateIndexFromCoordinates(newPosition.x, newPosition.z)] = true;
+            }
+        }
+    }
+
+    private void PlaceObstacles()
+    {
+        foreach(var knight in knightPiecesList)
+        {
+            PlaceObstaclesForThisKnight(knight);
         }
     }
 

@@ -19,13 +19,21 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        MapGrid grid = new MapGrid(width, length);
+        
         gridVisualizer.VisualizeGrid(width, length);
-        MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge);
+        GenerateNewMap();
+        
+
+    }
+
+    public void GenerateNewMap()
+    {   
+        mapVisualizer.ClearMap(); // clear map
+        grid = new MapGrid(width, length); // generate a new grid
+        MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge); // randomly select start and exit points
         CandidateMap map = new CandidateMap(grid, numberOfPieces);
         map.CreateMap(startPosition, exitPosition);
         mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), false);
-
     }
 
 }
