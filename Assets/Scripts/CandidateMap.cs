@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -137,6 +138,11 @@ public class CandidateMap
                 FindPath();
             }while (this.path.Count <= 0);
         }
+        foreach (Vector3 obj in listOfObstaclesToRemove)
+        {
+            UnityEngine.Debug.Log(obj);
+        }
+        
         foreach (var obstaclePosition in listOfObstaclesToRemove)
         {
             if (path.Contains(obstaclePosition) == false)

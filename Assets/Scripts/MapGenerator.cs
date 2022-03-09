@@ -31,12 +31,17 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateNewMap()
     {   
-        mapVisualizer.ClearMap(); // clear map
-        grid = new MapGrid(width, length); // generate a new grid
-        MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge); // randomly select start and exit points
-        map = new CandidateMap(grid, numberOfPieces);
-        map.CreateMap(startPosition, exitPosition, autoRepair);
-        mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), visualizeUsingPrefabs);
+        do
+        {
+            mapVisualizer.ClearMap(); // clear map
+            grid = new MapGrid(width, length); // generate a new grid
+            MapHelper.RandomlyChooseAndSetStartAndExit(grid, ref startPosition, ref exitPosition, randomPlacement, startEdge, exitEdge); // randomly select start and exit points
+            map = new CandidateMap(grid, numberOfPieces);
+            map.CreateMap(startPosition, exitPosition, autoRepair);
+            mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), visualizeUsingPrefabs);
+            UnityEngine.Debug.Log(map.ReturnMapData().path.Count);
+        } while (map.ReturnMapData().path.Count < 18);
+        
     }
 
     public void TryRepair()
