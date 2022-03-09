@@ -23,10 +23,9 @@ public static class MapHelper
 
     private static Vector3 RandomlyChoosPositionOnTheEdgeOfTheGrid(MapGrid grid, Vector3 startPosition, Direction direction = Direction.None)
     {
-        if(direction == Direction.None)
-        {
-            direction = (Direction)Random.Range(1, 5);
-        }
+
+        direction = (Direction)Random.Range(1, 5);
+
         Vector3 position = Vector3.zero;
         switch (direction)
         {
