@@ -14,7 +14,7 @@ public static class MapHelper
         }
         else
         {
-            startPosition = RandomlyChoosPositionOnTheEdgeOfTheGrid(grid, startPosition,startPositionEdge);
+            startPosition = RandomlyChoosPositionOnTheEdgeOfTheGrid(grid, startPosition, startPositionEdge);
             exitPosition = RandomlyChoosPositionOnTheEdgeOfTheGrid(grid, startPosition, exitPositionEdge);
         }
         grid.SetCell(startPosition.x, startPosition.z, CellObjectType.Start);

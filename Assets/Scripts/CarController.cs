@@ -50,7 +50,7 @@ public class CarController : MonoBehaviour
         frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
         frontRightWheelCollider.motorTorque = verticalInput * motorForce;
         currentbreakForce = isBreaking ? breakForce : 0f;
-        ApplyBreaking();       
+        ApplyBreaking();
     }
 
     private void ApplyBreaking()
@@ -80,8 +80,18 @@ public class CarController : MonoBehaviour
     {
         Vector3 pos;
         Quaternion rot
-;       wheelCollider.GetWorldPose(out pos, out rot);
+; wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("End"))
+        {
+            PublicVars.levelPassed += 1;
+            GameObject MapGen = GameObject.FindGameObjectWithTag("MapGenerator");
+            MapGen.GetComponent<MapGenerator>().GenerateNewMap();
+        }
     }
 }

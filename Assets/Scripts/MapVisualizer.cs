@@ -1,4 +1,3 @@
-using System.Buffers.Binary;
 using System.Drawing;
 using System.Reflection;
 using System.Collections;
@@ -46,10 +45,10 @@ public class MapVisualizer : MonoBehaviour
             for (int row = 0; row < grid.Length; row++)
             {
                 var cell = grid.GetCell(col, row);
-                var position = new Vector3(cell.X,0,cell.Z);
+                var position = new Vector3(cell.X, 0, cell.Z);
 
                 var index = grid.CalculateIndexFromCoordinates(position.x, position.z);
-                if(data.obstacleArray[index] && cell.IsTaken == false)
+                if (data.obstacleArray[index] && cell.IsTaken == false)
                 {
                     cell.ObjectType = CellObjectType.Obstacle;
                 }
@@ -66,9 +65,9 @@ public class MapVisualizer : MonoBehaviour
                             previousDirection = GetDirectionOfPreviousCell(position, data);
                             nextDirection = GetDirectionOfNextCell(position, data);
                         }
-                        if(previousDirection == Direction.Up && nextDirection == Direction.Right || previousDirection == Direction.Right && nextDirection == Direction.Up)
+                        if (previousDirection == Direction.Up && nextDirection == Direction.Right || previousDirection == Direction.Right && nextDirection == Direction.Up)
                         {
-                            CreateIndicator(position, roadTileCorner, Quaternion.Euler(0,90,0));
+                            CreateIndicator(position, roadTileCorner, Quaternion.Euler(0, 90, 0));
                         }
                         else if (previousDirection == Direction.Right && nextDirection == Direction.Down || previousDirection == Direction.Down && nextDirection == Direction.Right)
                         {
@@ -100,7 +99,7 @@ public class MapVisualizer : MonoBehaviour
                         if (data.path.Count > 0)
                         {
                             nextDirection = GetDirectionFromVectors(data.path[0], position);
-                            
+
                         }
                         if (nextDirection == Direction.Right || nextDirection == Direction.Left)
                         {
@@ -119,7 +118,7 @@ public class MapVisualizer : MonoBehaviour
                             switch (previousDirection)
                             {
                                 case Direction.Right:
-                                    CreateIndicator(position, exitTile, Quaternion.Euler(0,90,0));
+                                    CreateIndicator(position, exitTile, Quaternion.Euler(0, 90, 0));
                                     break;
                                 case Direction.Left:
                                     CreateIndicator(position, exitTile, Quaternion.Euler(0, -90, 0));
@@ -132,14 +131,14 @@ public class MapVisualizer : MonoBehaviour
                                     break;
                             }
                         }
-                        
+
                         break;
                     default:
                         break;
                 }
             }
         }
-	}
+    }
 
     private Direction GetDirectionOfNextCell(Vector3 position, MapData data)
     {
@@ -152,7 +151,7 @@ public class MapVisualizer : MonoBehaviour
     {
         var index = data.path.FindIndex(a => a == position);
         var previousCellPosition = Vector3.zero;
-        if(index > 0)
+        if (index > 0)
         {
             previousCellPosition = data.path[index - 1];
         }
@@ -165,13 +164,15 @@ public class MapVisualizer : MonoBehaviour
 
     private Direction GetDirectionFromVectors(Vector3 positionToGoTo, Vector3 position)
     {
-        if(positionToGoTo.x > position.x)
+        if (positionToGoTo.x > position.x)
         {
             return Direction.Right;
-        }else if(positionToGoTo.x < position.x)
+        }
+        else if (positionToGoTo.x < position.x)
         {
             return Direction.Left;
-        }else if(positionToGoTo.z < position.z)
+        }
+        else if (positionToGoTo.z < position.z)
         {
             return Direction.Down;
         }
@@ -200,7 +201,7 @@ public class MapVisualizer : MonoBehaviour
                 {
                     CreateIndicator(positionOnGrid, UnityEngine.Color.white, PrimitiveType.Cube);
                 }
-                
+
             }
         }
     }
@@ -243,7 +244,7 @@ public class MapVisualizer : MonoBehaviour
     {
         var element = GameObject.CreatePrimitive(sphere);
         dictionaryOfObstacles.Add(position, element);
-        element.transform.position = position + new Vector3(.5f,.5f,.5f); // fit into the grid
+        element.transform.position = position + new Vector3(.5f, .5f, .5f); // fit into the grid
         element.transform.parent = parent;
         var renderer = element.GetComponent<Renderer>();
         renderer.material.SetColor("_Color", color);
@@ -258,7 +259,7 @@ public class MapVisualizer : MonoBehaviour
         dictionaryOfObstacles.Clear();
 
     }
-    
+
 }
 
 

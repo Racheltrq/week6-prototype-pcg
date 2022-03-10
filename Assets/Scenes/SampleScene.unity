@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -212,7 +212,6 @@ Transform:
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -296,7 +295,6 @@ Transform:
   m_LocalRotation: {x: 0.44722337, y: -0, z: -0, w: 0.89442235}
   m_LocalPosition: {x: 7.027, y: 10.927, z: -4.429}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -350,7 +348,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.0727787, y: 0.5480155, z: 5.5515633}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -367,7 +364,7 @@ GameObject:
   - component: {fileID: 1437875210}
   m_Layer: 0
   m_Name: MapGenerator
-  m_TagString: Untagged
+  m_TagString: MapGenerator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -382,7 +379,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.071336746, y: -0.77980465, z: -1.4975348}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -404,9 +400,15 @@ MonoBehaviour:
   startEdge: 2
   exitEdge: 4
   randomPlacement: 0
-  numberOfPieces: 6
+  numberOfPieces: 10
   visualizeUsingPrefabs: 1
   autoRepair: 1
+  cars:
+  - {fileID: 6026452485902012592, guid: a3dc0b97fa55a4943b2e6b5fc23df8dc, type: 3}
+  - {fileID: 7202450281247497848, guid: 977989d2fe6005f45b5e95322f725b60, type: 3}
+  - {fileID: 6508007134786501338, guid: 916f361cf05b3c94493197a87a8aca11, type: 3}
+  - {fileID: 6724403750458255169, guid: ba30d79575a9eff418d68635e8bd06d7, type: 3}
+  - {fileID: 8924224651542172659, guid: e40225560c743554a9857b07e4b535db, type: 3}
   width: 15
   length: 15
 --- !u!1 &1653282788
@@ -449,7 +451,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.2243366, y: -0.20190057, z: -0.1867141}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
