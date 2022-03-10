@@ -1,4 +1,6 @@
 
+using System.Text.RegularExpressions;
+using System.Runtime.CompilerServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,9 @@ using Vector3 = UnityEngine.Vector3;
 
 public class CarController : MonoBehaviour
 {
+
+    public Rigidbody car;
+
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
 
@@ -30,11 +35,14 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform rearRightWheelTransform;
 
     private void FixedUpdate()
-    {
+    {   
+        car = GetComponent<Rigidbody>();
+        car.mass = 5000;
         GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+        
     }
 
 
@@ -47,8 +55,8 @@ public class CarController : MonoBehaviour
 
     private void HandleMotor()
     {
-        frontLeftWheelCollider.motorTorque = verticalInput * motorForce;
-        frontRightWheelCollider.motorTorque = verticalInput * motorForce;
+        frontLeftWheelCollider.motorTorque = verticalInput * 360;
+        frontRightWheelCollider.motorTorque = verticalInput * 360;
         currentbreakForce = isBreaking ? breakForce : 0f;
         ApplyBreaking();
     }
@@ -79,8 +87,8 @@ public class CarController : MonoBehaviour
     private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
     {
         Vector3 pos;
-        Quaternion rot
-; wheelCollider.GetWorldPose(out pos, out rot);
+        Quaternion rot; 
+        wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;
     }

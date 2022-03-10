@@ -1,3 +1,5 @@
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +17,7 @@ public class MapGenerator : MonoBehaviour
     public bool autoRepair = true;
 
     public GameObject[] cars;
+    private List<Vector3> path;
 
     //[Range(3,20)]
     public int width, length = 11;
@@ -32,13 +35,54 @@ public class MapGenerator : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            GenerateNewMap();
+        }
+        PublicVars.timePassed += Time.deltaTime;
+        //UnityEngine.Debug.Log((int)PublicVars.timePassed);
+        
+    }
+
+    void OnGUI()
+    {
+        GUI.Label(new Rect(10, 10, 100, 20), "Level Passed: " + PublicVars.levelPassed);
+        GUI.Label(new Rect(10, 25, 100, 20), "Time Passed: " + (int)PublicVars.timePassed);
+    }
+
     public void SpawnCar()
     {
         Transform start = GameObject.FindGameObjectWithTag("Start").transform;
-        Vector3 startPos = start.position + start.forward * 0.1f;
-        Debug.Log(start.position);
-        Debug.Log(start.forward);
-        currCar = Instantiate(cars[Random.Range(0, cars.Length)], startPos, start.rotation);
+        //Vector3 startPos = start.position + start.forward * 0.1f;
+        //UnityEngine.Debug.Log(start.position);
+        
+        Vector3 startPos = path[1] + start.forward * 0.3f;
+        //UnityEngine.Debug.Log(startPos);
+        if (startPos.x > 14) 
+        {
+            startPos.x = 14;
+        }
+        if (startPos.x < 1) 
+        {
+            startPos.x = 1;
+        }
+        if (startPos.z > 14) 
+        {
+            startPos.z = 14;
+        }
+        if (startPos.z < 1) 
+        {
+            startPos.z = 1;
+        }
+        UnityEngine.Debug.Log(startPos);
+        startPos.y += 1;
+        startPos.x += 0.5f;
+        Vector3 relativePos = path[1] - path[0];
+        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        currCar = Instantiate(cars[Random.Range(0, cars.Length)], startPos, rotation);
+        
     }
 
     public void GenerateNewMap()
@@ -52,8 +96,8 @@ public class MapGenerator : MonoBehaviour
             map = new CandidateMap(grid, numberOfPieces);
             map.CreateMap(startPosition, exitPosition, autoRepair);
             mapVisualizer.VisualizeMap(grid, map.ReturnMapData(), visualizeUsingPrefabs);
-            UnityEngine.Debug.Log(map.ReturnMapData().path.Count);
-        } while (map.ReturnMapData().path.Count < 18);
+            path = map.ReturnMapData().path;
+        } while (path.Count < 18);
         SpawnCar();
 
     }
