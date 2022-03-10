@@ -11,6 +11,14 @@ public class CarController : MonoBehaviour
 
     public Rigidbody car;
 
+    public AudioClip carAccelerate;
+    public AudioClip carBrake;
+
+    private bool canPlayAccelerate = true;
+    private bool canPlayBrake = true;
+
+    public AudioSource objectSound;
+
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
 
@@ -35,14 +43,19 @@ public class CarController : MonoBehaviour
     [SerializeField] private Transform rearRightWheelTransform;
 
     private void FixedUpdate()
-    {   
+    {
         car = GetComponent<Rigidbody>();
         car.mass = 5000;
         GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
-        
+        if (transform.position.y < 0)
+        {
+            GameObject MapGen = GameObject.FindGameObjectWithTag("MapGenerator");
+            MapGen.GetComponent<MapGenerator>().SpawnCar();
+            Destroy(gameObject);
+        }
     }
 
 
@@ -51,6 +64,36 @@ public class CarController : MonoBehaviour
         horizontalInput = Input.GetAxis(HORIZONTAL);
         verticalInput = Input.GetAxis(VERTICAL);
         isBreaking = Input.GetKey(KeyCode.Space);
+        if (verticalInput > 0)
+        {
+            if (canPlayAccelerate)
+            {
+                StartCoroutine(PlayAccelerate());
+            }
+        }
+        if (isBreaking)
+        {
+            if (canPlayBrake)
+            {
+                StartCoroutine(PlayBrake());
+            }
+        }
+    }
+
+    IEnumerator PlayAccelerate()
+    {
+        canPlayAccelerate = false;
+        objectSound.PlayOneShot(carAccelerate, 1);
+        yield return new WaitForSeconds(1.5f);
+        canPlayAccelerate = true;
+    }
+
+    IEnumerator PlayBrake()
+    {
+        canPlayBrake = false;
+        objectSound.PlayOneShot(carBrake, 0.2f);
+        yield return new WaitForSeconds(1.5f);
+        canPlayBrake = true;
     }
 
     private void HandleMotor()
@@ -87,7 +130,7 @@ public class CarController : MonoBehaviour
     private void UpdateSingleWheel(WheelCollider wheelCollider, Transform wheelTransform)
     {
         Vector3 pos;
-        Quaternion rot; 
+        Quaternion rot;
         wheelCollider.GetWorldPose(out pos, out rot);
         wheelTransform.rotation = rot;
         wheelTransform.position = pos;

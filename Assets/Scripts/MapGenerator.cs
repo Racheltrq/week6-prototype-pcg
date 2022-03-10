@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    public GUIStyle guiStyle;
     public GridVisualizer gridVisualizer;
     public MapVisualizer mapVisualizer;
     public Direction startEdge, exitEdge;
@@ -26,30 +27,34 @@ public class MapGenerator : MonoBehaviour
 
     private GameObject currCar;
 
+    public AudioClip carStart;
+
+    public AudioSource objectSound;
+
     // Start is called before the first frame update
     private void Start()
     {
 
-        gridVisualizer.VisualizeGrid(width, length);
+        // gridVisualizer.VisualizeGrid(width, length);
         GenerateNewMap();
 
     }
 
     void Update()
     {
-        if (Input.GetKeyDown("space"))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             GenerateNewMap();
         }
         PublicVars.timePassed += Time.deltaTime;
         //UnityEngine.Debug.Log((int)PublicVars.timePassed);
-        
+
     }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 20), "Level Passed: " + PublicVars.levelPassed);
-        GUI.Label(new Rect(10, 25, 100, 20), "Time Passed: " + (int)PublicVars.timePassed);
+        GUI.Label(new Rect(10, 10, 100, 20), "Level Passed: " + PublicVars.levelPassed, guiStyle);
+        GUI.Label(new Rect(10, 40, 100, 20), "Time Passed: " + (int)PublicVars.timePassed, guiStyle);
     }
 
     public void SpawnCar()
@@ -57,32 +62,32 @@ public class MapGenerator : MonoBehaviour
         Transform start = GameObject.FindGameObjectWithTag("Start").transform;
         //Vector3 startPos = start.position + start.forward * 0.1f;
         //UnityEngine.Debug.Log(start.position);
-        
-        Vector3 startPos = path[1] + start.forward * 0.3f;
+
+        Vector3 startPos = path[0]; // + start.forward * 0.3f;
         //UnityEngine.Debug.Log(startPos);
-        if (startPos.x > 14) 
+        if (startPos.x > 14)
         {
             startPos.x = 14;
         }
-        if (startPos.x < 1) 
+        if (startPos.x < 1)
         {
             startPos.x = 1;
         }
-        if (startPos.z > 14) 
+        if (startPos.z > 14)
         {
             startPos.z = 14;
         }
-        if (startPos.z < 1) 
+        if (startPos.z < 1)
         {
             startPos.z = 1;
         }
-        UnityEngine.Debug.Log(startPos);
-        startPos.y += 1;
-        startPos.x += 0.5f;
+        // UnityEngine.Debug.Log(startPos);
+        startPos.y += 0.5f;
+        // startPos.x += 0.5f;
         Vector3 relativePos = path[1] - path[0];
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         currCar = Instantiate(cars[Random.Range(0, cars.Length)], startPos, rotation);
-        
+        objectSound.PlayOneShot(carStart);
     }
 
     public void GenerateNewMap()
